@@ -1,0 +1,30 @@
+{
+  "name": "geom-split-vertices",
+  "version": "1.0.0",
+  "description": "Creates new geometry with unique vertices for each face.",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Marcin Ignac",
+    "email": "marcin.ignac@gmail.com",
+    "url": "https://github.com/vorg"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "pex",
+    "geometry",
+    "webgl"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vorg/geom-split-vertices.git"
+  },
+  "homepage": "https://github.com/vorg/geom-split-vertices",
+  "bugs": {
+    "url": "https://github.com/vorg/geom-split-vertices/issues"
+  }
+}

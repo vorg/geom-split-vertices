@@ -1,31 +1,41 @@
-![](screenshot.jpg)
-
 # geom-split-vertices
 
-Creates new geometry with unique vertices for each face.
+Creates a new geometry with unique vertices for each face. Useful for flat shading.
 
-Useful for flat shading.
+![](screenshot.jpg)
+
+## Installation
+
+```bash
+npm install geom-split-vertices
+```
 
 ## Usage
 
-```javascript
-var splitVertices = require('geom-split-vertices')
-var sphere = require('primitive-sphere')()
+```js
+import splitVertices from "geom-split-vertices";
+import { sphere } from "primitive-geometry";
 
-var g = splitVertices(sphere)
-// g = { positions: [], cells: [] }
+const geometry = sphere();
+const splitGeometry = splitVertices(geometry.positions, geometry.cells);
+// => { positions: Float32Array(9216), cells: Uint32Array(3072) }
 ```
 
 ## API
 
-### `splitVertices(geometry)`
+#### splitVertices(positions, cells): geometry
 
-- `geometry` - geometry object { positions: [], cells: [] }
+**Parameters**
 
-Returns new geometry with unique vertex position for each cell / face.
+- positions: `TypedArray|Array` – simplicial complex geometry positions (eg. `new Float32Array([x, y, z, x, y, z, ...])` or `new Array([x, y, z], [x, y, z], ...)`)
+- cells: `TypedArray|Array` – simplicial complex geometry cells (eg. `new Uint32Array([a, b, c, a, b, c, ...])` or `new Array([a, b, c], [a, b, c], ...)`)
 
-*Note: Other vertex attributes like normals and uvs are lost and need to be recomputed.*
+**Returns**
+
+geometry: `{ positions: TypedArray|Array, cells: TypedArray|Array }` - new geometry with unique vertex position for each cell / face.
+
+_Note: Other vertex attributes like normals and uvs are lost and need to be recomputed._
 
 ## License
 
-MIT, see [LICENSE.md](http://github.com/vorg/geom-split-vertices/blob/master/LICENSE.md) for details.
+MIT. See [license file](https://github.com/vorg/geom-split-vertices/blob/master/LICENSE.md).

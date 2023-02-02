@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "es-module-shims": "^1.6.3",
-    "geom-normals": "github:dmnsgn/geom-normals",
+    "geom-normals": "^2.0.0",
     "pex-context": "^3.0.0-alpha.3",
     "primitive-geometry": "^2.9.1"
   },

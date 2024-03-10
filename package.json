@@ -30,16 +30,18 @@
     "release": "snowdev release"
   },
   "dependencies": {
-    "pex-math": "^4.0.0-alpha.3"
+    "pex-math": "^4.1.0",
+    "typed-array-constructor": "^1.0.1"
   },
   "devDependencies": {
-    "es-module-shims": "^1.6.3",
-    "geom-normals": "^2.0.0",
+    "es-module-shims": "^1.8.3",
+    "geom-normals": "^2.0.1",
     "pex-context": "^3.0.0-alpha.3",
-    "primitive-geometry": "^2.9.1"
+    "primitive-geometry": "^2.10.0",
+    "primitive-sphere": "^3.0.0"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+    "node": ">=20.0.0",
+    "npm": ">=9.6.4"
   }
 }

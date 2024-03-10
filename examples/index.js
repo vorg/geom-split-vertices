@@ -1,9 +1,10 @@
 import splitVertices from "../index.js";
 import { sphere } from "primitive-geometry";
+import oldSphere from "primitive-sphere";
 
 import createContext from "pex-context";
 import normals from "geom-normals";
-import { mat4, avec3 } from "pex-math";
+import { mat4, avec3, vec3 } from "pex-math";
 
 const basicVert = /* glsl */ `#version 300 es
 uniform mat4 uProjectionMatrix;
@@ -48,6 +49,10 @@ const ctx = createContext({
 });
 
 const geometry = sphere();
+// geometry.positions = Array.from(geometry.positions);
+// geometry.cells = Array.from(geometry.cells);
+// const geometry = oldSphere(0.5, { segments: 16 });
+
 const splitGeometry = splitVertices(geometry.positions, geometry.cells);
 
 const clearCmd = {
@@ -62,7 +67,7 @@ const drawCmd = {
     depthTest: true,
     vert: basicVert,
     frag: basicFrag,
-    cullFace: true,
+    // cullFace: true,
   }),
   uniforms: {
     uProjectionMatrix: mat4.perspective(
@@ -70,38 +75,61 @@ const drawCmd = {
       Math.PI / 4,
       W / H,
       0.1,
-      100
+      100,
     ),
     uViewMatrix: mat4.lookAt(mat4.create(), [0, 0, 2], [0, 0, 0], [0, 1, 0]),
     uShrinkScale: 0.75,
   },
 };
 
+const faceSize = 3;
+
 const getBarycenter = (face) => {
   const barycenter = [0, 0, 0];
 
-  for (let i = 0; i < 3; i++) {
-    barycenter[0] += face[i][0] / 3;
-    barycenter[1] += face[i][1] / 3;
-    barycenter[2] += face[i][2] / 3;
+  for (let i = 0; i < faceSize; i++) {
+    barycenter[0] += face[i][0] / faceSize;
+    barycenter[1] += face[i][1] / faceSize;
+    barycenter[2] += face[i][2] / faceSize;
   }
 
   return barycenter;
 };
 
-const faceSize = 3;
+const face = vec3.create();
+const a = vec3.create();
+const b = vec3.create();
+const c = vec3.create();
 
 function faceBarycenter(positions, cells) {
-  const barycenters = new Float32Array(positions.length);
+  const isFlatArray = !positions[0]?.length;
 
-  for (let i = 0; i < cells.length / 3; i++) {
-    const face = cells.slice(i * faceSize, i * faceSize + faceSize);
+  const isCellsFlatArray = !cells[0]?.length;
+  const l = cells.length / (isCellsFlatArray ? 3 : 1);
 
-    const barycenter = getBarycenter([
-      positions.slice(face[0] * 3, face[0] * 3 + 3),
-      positions.slice(face[1] * 3, face[1] * 3 + 3),
-      positions.slice(face[2] * 3, face[2] * 3 + 3),
-    ]);
+  const barycenters = new Float32Array(
+    positions.length * (isFlatArray ? 1 : 3),
+  );
+
+  for (let i = 0; i < l; i++) {
+    // face
+    if (isCellsFlatArray) {
+      avec3.set(face, 0, cells, i);
+    } else {
+      vec3.set(face, cells[i]);
+    }
+
+    if (isFlatArray) {
+      avec3.set(a, 0, positions, face[0]);
+      avec3.set(b, 0, positions, face[1]);
+      avec3.set(c, 0, positions, face[2]);
+    } else {
+      vec3.set(a, positions[face[0]]);
+      vec3.set(b, positions[face[1]]);
+      vec3.set(c, positions[face[2]]);
+    }
+
+    const barycenter = getBarycenter([a, b, c]);
 
     for (let j = 0; j < faceSize; j++) {
       avec3.set(barycenters, i * faceSize + j, barycenter, 0);
@@ -124,10 +152,10 @@ const splitGeometryAttributes = {
   attributes: {
     aPosition: ctx.vertexBuffer(splitGeometry.positions),
     aBarycenter: ctx.vertexBuffer(
-      faceBarycenter(splitGeometry.positions, splitGeometry.cells)
+      faceBarycenter(splitGeometry.positions, splitGeometry.cells),
     ),
     aNormal: ctx.vertexBuffer(
-      normals(splitGeometry.positions, splitGeometry.cells)
+      normals(splitGeometry.positions, splitGeometry.cells),
     ),
   },
   indices: ctx.indexBuffer(splitGeometry.cells),

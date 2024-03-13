@@ -7,14 +7,15 @@ const TEMP_POSITION = vec3.create();
 function splitVertices(positions, cells) {
   const isFlatArray = !positions[0]?.length;
   const isCellsFlatArray = !cells[0]?.length;
-  const l = cells.length / (isCellsFlatArray ? 3 : 1);
 
-  const size = (isCellsFlatArray ? cells.length : cells.length * 3) * 3;
+  const cellCount = cells.length / (isCellsFlatArray ? 3 : 1);
+  const positionCount = cellCount * 3;
 
-  const splitPositions = isFlatArray ? new positions.constructor(size) : [];
+  const splitPositions = isFlatArray
+    ? new positions.constructor(positionCount * 3)
+    : [];
   const splitCells = isCellsFlatArray
-    ? typedArrayConstructor(size).from(
-        { length: cells.length },
+    ? new (typedArrayConstructor(positionCount))(cells.length).map(
         (_, index) => index,
       )
     : Array.from({ length: cells.length }, (_, index) => [
@@ -23,7 +24,7 @@ function splitVertices(positions, cells) {
         index * 3 + 2,
       ]);
 
-  for (let i = 0; i < l; i++) {
+  for (let i = 0; i < cellCount; i++) {
     if (isCellsFlatArray) {
       avec3.set(TEMP_CELL, 0, cells, i);
     } else {

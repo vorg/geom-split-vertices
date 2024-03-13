@@ -1,5 +1,5 @@
 import splitVertices from "../index.js";
-import { sphere } from "primitive-geometry";
+import { sphere,cube } from "primitive-geometry";
 import oldSphere from "primitive-sphere";
 
 import createContext from "pex-context";
@@ -49,11 +49,14 @@ const ctx = createContext({
 });
 
 const geometry = sphere();
+// const geometry = cube();
 // geometry.positions = Array.from(geometry.positions);
 // geometry.cells = Array.from(geometry.cells);
 // const geometry = oldSphere(0.5, { segments: 16 });
+console.log(geometry);
 
 const splitGeometry = splitVertices(geometry.positions, geometry.cells);
+console.log(splitGeometry);
 
 const clearCmd = {
   pass: ctx.pass({

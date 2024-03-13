@@ -27,8 +27,8 @@ const splitGeometry = splitVertices(geometry.positions, geometry.cells);
 
 **Parameters**
 
-- positions: `TypedArray|Array` – simplicial complex geometry positions (eg. `new Float32Array([x, y, z, x, y, z, ...])` or `new Array([x, y, z], [x, y, z], ...)`)
-- cells: `TypedArray|Array` – simplicial complex geometry cells (eg. `new Uint32Array([a, b, c, a, b, c, ...])` or `new Array([a, b, c], [a, b, c], ...)`)
+- positions: `TypedArray | Array | Array<[x, y, z]>` – simplicial complex geometry positions (eg. `new Float32Array([x, y, z, x, y, z, ...])/new Array(x, y, z, x, y, z, ...)` or `new Array([x, y, z], [x, y, z], ...)`)
+- cells: `TypedArray | Array | Array<[x, y, z]>` – simplicial complex geometry cells (eg. `new Uint32Array([a, b, c, a, b, c, ...])/new Array(a, b, c, a, b, c, ...)` or `new Array([a, b, c], [a, b, c], ...)`)
 
 **Returns**
 

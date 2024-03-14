@@ -27,9 +27,7 @@ function splitVertices(positions, cells) {
       avec3.set(TEMP_CELL, 0, cells, i);
     } else {
       faceSize = cells[i].length;
-      splitCells.push(
-        Array.from({ length: faceSize }, (_, index) => cellIndex + index),
-      );
+      splitCells.push(cells[i].map((_, index) => cellIndex + index));
       cellIndex += faceSize;
     }
 

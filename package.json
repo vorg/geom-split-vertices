@@ -35,7 +35,7 @@
   },
   "devDependencies": {
     "es-module-shims": "^1.8.3",
-    "geom-normals": "^2.0.1",
+    "geom-normals": "^2.1.0",
     "pex-context": "^3.0.0-alpha.3",
     "primitive-geometry": "^2.10.0",
     "primitive-sphere": "^3.0.0"

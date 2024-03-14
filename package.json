@@ -35,8 +35,9 @@
   },
   "devDependencies": {
     "es-module-shims": "^1.8.3",
-    "geom-normals": "^2.1.0",
+    "geom-triangulate": "^2.0.1",
     "pex-context": "^3.0.0-alpha.3",
+    "pex-gui": "^3.0.0",
     "primitive-geometry": "^2.10.0",
     "primitive-sphere": "^3.0.0"
   },

@@ -15,28 +15,33 @@ function splitVertices(positions, cells) {
     ? new positions.constructor(positionCount * 3)
     : [];
   const splitCells = isCellsFlatArray
-    ? new (typedArrayConstructor(positionCount))(cells.length).map(
-        (_, index) => index,
-      )
-    : Array.from({ length: cells.length }, (_, index) => [
-        index * 3,
-        index * 3 + 1,
-        index * 3 + 2,
-      ]);
+    ? new (typedArrayConstructor(positionCount))(cells.length)
+    : [];
+
+  let faceSize = 3;
+  let cellIndex = 0;
 
   for (let i = 0; i < cellCount; i++) {
     if (isCellsFlatArray) {
+      const a = i * 3;
+      const b = i * 3 + 1;
+      const c = i * 3 + 2;
+      avec3.set3(splitCells, i, a, b, c);
       avec3.set(TEMP_CELL, 0, cells, i);
     } else {
-      vec3.set(TEMP_CELL, cells[i]);
+      faceSize = cells[i].length;
+      splitCells.push(
+        Array.from({ length: faceSize }, (_, index) => cellIndex + index),
+      );
+      cellIndex += faceSize;
     }
 
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < faceSize; j++) {
       if (isFlatArray) {
         avec3.set(TEMP_POSITION, 0, positions, TEMP_CELL[j]);
         avec3.set(splitPositions, i * 3 + j, TEMP_POSITION, 0);
       } else {
-        splitPositions.push(vec3.copy(positions[TEMP_CELL[j]]));
+        splitPositions.push(vec3.copy(positions[cells[i][j]]));
       }
     }
   }

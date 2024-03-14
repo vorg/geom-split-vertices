@@ -23,10 +23,7 @@ function splitVertices(positions, cells) {
 
   for (let i = 0; i < cellCount; i++) {
     if (isCellsFlatArray) {
-      const a = i * 3;
-      const b = i * 3 + 1;
-      const c = i * 3 + 2;
-      avec3.set3(splitCells, i, a, b, c);
+      avec3.set3(splitCells, i, i * 3, i * 3 + 1, i * 3 + 2);
       avec3.set(TEMP_CELL, 0, cells, i);
     } else {
       faceSize = cells[i].length;

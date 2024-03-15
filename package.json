@@ -1,6 +1,6 @@
 {
   "name": "geom-split-vertices",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Creates a new geometry with unique vertices for each face.",
   "keywords": [
     "geom",

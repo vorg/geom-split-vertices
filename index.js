@@ -28,6 +28,7 @@ function splitVertices(positions, cells) {
     } else {
       faceSize = cells[i].length;
       splitCells.push(cells[i].map((_, index) => cellIndex + index));
+      avec3.set(TEMP_CELL, 0, cells[i], 0)
       cellIndex += faceSize;
     }
 
@@ -36,7 +37,7 @@ function splitVertices(positions, cells) {
         avec3.set(TEMP_POSITION, 0, positions, TEMP_CELL[j]);
         avec3.set(splitPositions, i * 3 + j, TEMP_POSITION, 0);
       } else {
-        splitPositions.push(vec3.copy(positions[cells[i][j]]));
+        splitPositions.push(vec3.copy(positions[TEMP_CELL[j]]));
       }
     }
   }

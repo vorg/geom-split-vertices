@@ -1,48 +1,56 @@
 import { avec3, vec3 } from "pex-math";
 import typedArrayConstructor from "typed-array-constructor";
 
-const TEMP_CELL = vec3.create();
-const TEMP_POSITION = vec3.create();
-
 function splitVertices(positions, cells) {
-  const isFlatArray = !positions[0]?.length;
-  const isCellsFlatArray = !cells[0]?.length;
+  const positionsAreFlat = !Array.isArray(positions[0]);
+  const cellsAreFlat = !Array.isArray(cells[0]);
 
-  const cellCount = cells.length / (isCellsFlatArray ? 3 : 1);
-  const positionCount = cellCount * 3;
+  const faces = cellsAreFlat
+    ? Array.from({ length: cells.length / 3 }, (_, i) =>
+        cells.slice(i * 3, i * 3 + 3),
+      )
+    : cells;
 
-  const splitPositions = isFlatArray
-    ? new positions.constructor(positionCount * 3)
+  const vertexCount = faces.reduce((count, face) => count + face.length, 0);
+
+  const splitPositions = positionsAreFlat
+    ? new positions.constructor(vertexCount * 3)
     : [];
-  const splitCells = isCellsFlatArray
-    ? new (typedArrayConstructor(positionCount))(cells.length)
-    : [];
 
-  let faceSize = 3;
-  let cellIndex = 0;
+  const SplitCellsArray = typedArrayConstructor(vertexCount);
 
-  for (let i = 0; i < cellCount; i++) {
-    if (isCellsFlatArray) {
-      avec3.set3(splitCells, i, i * 3, i * 3 + 1, i * 3 + 2);
-      avec3.set(TEMP_CELL, 0, cells, i);
-    } else {
-      faceSize = cells[i].length;
-      splitCells.push(cells[i].map((_, index) => cellIndex + index));
-      avec3.set(TEMP_CELL, 0, cells[i], 0)
-      cellIndex += faceSize;
+  const splitCells = cellsAreFlat ? new SplitCellsArray(vertexCount) : [];
+
+  let vertexIndex = 0;
+
+  for (const face of faces) {
+    const splitFace = [];
+
+    for (const sourceIndex of face) {
+      if (positionsAreFlat) {
+        avec3.set(splitPositions, vertexIndex, positions, sourceIndex);
+      } else {
+        splitPositions.push(vec3.copy(positions[sourceIndex]));
+      }
+
+      if (cellsAreFlat) {
+        splitCells[vertexIndex] = vertexIndex;
+      } else {
+        splitFace.push(vertexIndex);
+      }
+
+      vertexIndex++;
     }
 
-    for (let j = 0; j < faceSize; j++) {
-      if (isFlatArray) {
-        avec3.set(TEMP_POSITION, 0, positions, TEMP_CELL[j]);
-        avec3.set(splitPositions, i * 3 + j, TEMP_POSITION, 0);
-      } else {
-        splitPositions.push(vec3.copy(positions[TEMP_CELL[j]]));
-      }
+    if (!cellsAreFlat) {
+      splitCells.push(splitFace);
     }
   }
 
-  return { positions: splitPositions, cells: splitCells };
+  return {
+    positions: splitPositions,
+    cells: splitCells,
+  };
 }
 
 export default splitVertices;

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+# [2.2.0](https://github.com/vorg/geom-split-vertices/compare/v2.1.0...v2.2.0) (2026-09-23)
+
+### Bug Fixes
+
+* handle all 4 cases ([46bd706](https://github.com/vorg/geom-split-vertices/commit/46bd7066098db840ab4d93e242198fce8d6e88ef))
+
+### Features
+
+* add support for quads and n-gons ([7625c19](https://github.com/vorg/geom-split-vertices/commit/7625c1935790d1f7d53e2cadbf62d559b845112c))
+
 # [2.1.0](https://github.com/vorg/geom-split-vertices/compare/v2.0.1...v2.1.0) (2024-03-15)
 
 

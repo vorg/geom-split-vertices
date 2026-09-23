@@ -1,6 +1,6 @@
 {
   "name": "geom-split-vertices",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "Creates a new geometry with unique vertices for each face.",
   "keywords": [
     "geom",
@@ -14,7 +14,10 @@
   ],
   "homepage": "https://github.com/vorg/geom-split-vertices",
   "bugs": "https://github.com/vorg/geom-split-vertices/issues",
-  "repository": "vorg/geom-split-vertices",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vorg/geom-split-vertices.git"
+  },
   "license": "MIT",
   "author": "Marcin Ignac <marcin.ignac@gmail.com> (https://github.com/vorg)",
   "contributors": [
